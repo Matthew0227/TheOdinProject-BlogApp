@@ -28,6 +28,12 @@ class BlogsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should show blog page without rendering a new unsaved comment as an existing comment" do
+    get blog_url(@blog)
+    assert_response :success
+    assert_select "h2", "Add a Comment"
+  end
+
   test "should get edit" do
     get edit_blog_url(@blog)
     assert_response :success
