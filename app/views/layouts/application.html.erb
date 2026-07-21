@@ -32,7 +32,16 @@
             <h1 class="text-xl font-semibold tracking-tight text-slate-900">Blogs App</h1>
             <p class="mt-1 text-sm text-slate-500">A simple Blog App.</p>
           </div>
+          <div class="flex gap-2">
           <%= link_to "All blogs", blogs_path, class: "inline-flex items-center justify-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100" %>
+            <div>
+              <%if Current.user%>
+                <%= button_to "Log out", session_path, method: :delete, class: "cursor-pointer inline-flex items-center justify-center rounded-full bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700" %>
+                <%else%>
+                <%= link_to "Log in", new_session_path, class: "cursor-pointer inline-flex items-center justify-center rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700" %>
+              <%end%>
+            </div>
+          </div>
         </div>
       </header>
 
