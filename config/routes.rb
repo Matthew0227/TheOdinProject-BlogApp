@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resource :session
+  resources :passwords, param: :token
 
   resources :blogs do
     resources :comments, except: [:index, :show]
