@@ -5,4 +5,10 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(email_address: " DOWNCASED@EXAMPLE.COM ")
     assert_equal("downcased@example.com", user.email_address)
   end
+
+  test "requires a username" do
+    user = User.new(email_address: "test@example.com", password: "password123")
+    assert_not user.valid?
+    assert_includes user.errors[:username], "can't be blank"
+  end
 end

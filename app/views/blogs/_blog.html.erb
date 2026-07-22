@@ -4,6 +4,10 @@
   </div>
 
   <div>
+    <p class="text-sm text-gray-600">Posted by <span class="font-medium text-gray-900"><%= blog.user&.username || "Unknown user" %></span></p>
+  </div>
+
+  <div>
     <p class="whitespace-pre-line text-sm text-gray-700"><%= blog.body %></p>
   </div>
 </div>
