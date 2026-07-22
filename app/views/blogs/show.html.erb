@@ -13,9 +13,11 @@
     <%= render @blog %>
 
     <div class="mt-6 flex flex-wrap items-center gap-3">
-      <%= link_to "Edit this blog", edit_blog_path(@blog), class: "rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200" %>
+      <% if @blog.owned_by?(Current.user) %>
+        <%= link_to "Edit this blog", edit_blog_path(@blog), class: "rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200" %>
+        <%= button_to "Destroy this blog", @blog, method: :delete, class: "rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700" %>
+      <% end %>
       <%= link_to "Back to blogs", blogs_path, class: "rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50" %>
-      <%= button_to "Destroy this blog", @blog, method: :delete, class: "rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700" %>
     </div>
   </div>
   <p>Posted on <%= @blog.created_at.strftime("%B %d, %Y") %></p>
@@ -29,8 +31,12 @@
             <div class="mb-2 flex items-center justify-between gap-3">
               <strong class="text-sm font-semibold text-gray-900"><%= comment.author %></strong>
               <div class="flex items-center gap-2">
-                <%= link_to "Edit", edit_blog_comment_path(@blog, comment), class: "text-sm font-medium text-blue-600 hover:text-blue-700" %>
-                <%= button_to "Delete", blog_comment_path(@blog, comment), method: :delete, data: { turbo_confirm: "Delete this comment?" }, class: "text-sm font-medium text-red-600 hover:text-red-700" %>
+                <% if comment.owned_by?(Current.user) %>
+                  <%= link_to "Edit", edit_blog_comment_path(@blog, comment), class: "text-sm font-medium text-blue-600 hover:text-blue-700" %>
+                <% end %>
+                <% if comment.owned_by?(Current.user) || @blog.owned_by?(Current.user) %>
+                  <%= button_to "Delete", blog_comment_path(@blog, comment), method: :delete, data: { turbo_confirm: "Delete this comment?" }, class: "cursor-pointer text-sm font-medium text-red-600 hover:text-red-700" %>
+                <% end %>
               </div>
             </div>
             <p class="text-sm text-gray-700"><%= comment.body %></p>

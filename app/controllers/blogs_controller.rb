@@ -1,6 +1,7 @@
 class BlogsController < ApplicationController
   allow_unauthenticated_access only: [:index]
   before_action :set_blog, only: %i[ show edit update destroy ]
+  before_action :authorize_blog_owner, only: %i[ edit update destroy ]
 
   # GET /blogs or /blogs.json
   def index
@@ -63,6 +64,12 @@ class BlogsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_blog
       @blog = Blog.find(params.expect(:id))
+    end
+
+    def authorize_blog_owner
+      return if @blog.owned_by?(Current.user)
+
+      redirect_to @blog, alert: "You can only edit or delete your own posts."
     end
 
     # Only allow a list of trusted parameters through.
