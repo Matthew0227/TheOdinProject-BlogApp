@@ -20,7 +20,7 @@
       <%= link_to "Back to blogs", blogs_path, class: "rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50" %>
     </div>
   </div>
-  <p>Posted on <%= @blog.created_at.strftime("%B %d, %Y") %></p>
+  <p class="text-sm text-gray-500">Posted on <%= @blog.created_at.strftime("%B %d, %Y") %></p>
   <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
     <h4 class="mb-4 text-lg font-semibold text-gray-900">Comments</h4>
 
@@ -29,7 +29,7 @@
         <% @blog.comments.each do |comment| %>
           <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
             <div class="mb-2 flex items-center justify-between gap-3">
-              <strong class="text-sm font-semibold text-gray-900"><%= comment.author %></strong>
+              <strong class="text-sm font-semibold text-gray-900"><%= comment.user&.username || "Unknown user" %></strong>
               <div class="flex items-center gap-2">
                 <% if comment.owned_by?(Current.user) %>
                   <%= link_to "Edit", edit_blog_comment_path(@blog, comment), class: "text-sm font-medium text-blue-600 hover:text-blue-700" %>
@@ -53,17 +53,12 @@
 
     <%= form_with(model: [@blog, @comment], class: "space-y-4") do |form| %>
       <div>
-        <%= form.label :author, class: "mb-1 block text-sm font-medium text-gray-700" %>
-        <%= form.text_field :author, class: "w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200" %>
-      </div>
-
-      <div>
         <%= form.label :body, class: "mb-1 block text-sm font-medium text-gray-700" %>
         <%= form.text_area :body, rows: 4, class: "w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200" %>
       </div>
 
       <div>
-        <%= form.submit "Post Comment", class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
+        <%= form.submit "Post Comment", class: "cursor-pointer rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
       </div>
     <% end %>
   </div>

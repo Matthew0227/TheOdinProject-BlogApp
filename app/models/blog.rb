@@ -1,4 +1,5 @@
 class Blog < ApplicationRecord
+  before_validation :capitalize_title
   belongs_to :user, optional: true
   has_many :comments, dependent: :destroy
 
@@ -7,5 +8,12 @@ class Blog < ApplicationRecord
 
   def owned_by?(user)
     user.present? && self.user_id == user.id
+  end
+
+  private
+
+  
+  def capitalize_title
+    self.title = title.capitalize if title.present?
   end
 end
